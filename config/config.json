@@ -1,17 +1,17 @@
 {
   "google_sheets": {
     "tables": {
-      "messages": {
+      "email_messages": {
         "file_name": "email_tracker",
         "worksheet_name": "messages",
         "worksheet_range": "A1:F"
       },
-      "open_events": {
+      "email_open_events": {
         "file_name": "email_tracker",
         "worksheet_name": "open_events",
         "worksheet_range": "A1:E"
       },
-      "click_events": {
+      "email_click_events": {
         "file_name": "email_tracker",
         "worksheet_name": "click_events",
         "worksheet_range": "A1:F"

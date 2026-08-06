@@ -1,13 +1,11 @@
-# base_repository.py
-
-
-# /src/infrastructure/persistence/google_sheets/google_sheets_repository.py
+# /src/infrastructure/persistence/google_sheets/base_repository.py
 
 from abc import ABC
 
 from src.infrastructure.persistence.common.types import RawRow
 
 from src.infrastructure.persistence.google_sheets.google_sheet_catalog import (
+    GoogleSheetLocator,
     GoogleSheetCatalog,
 )
 
@@ -31,9 +29,13 @@ class GoogleSheetsRepository(ABC):
     def _read_rows(
             self,
     ) -> list[RawRow]:
+        """
         table = self._catalog.table(
             self.TABLE_NAME,
         )
+        """
+
+        table = self._table()
 
         return self._query_service.read_values(
             spreadsheet_id=table.spreadsheet_id,
@@ -111,3 +113,35 @@ class GoogleSheetsRepository(ABC):
                 row.get(column_name, "")
             ).strip() == normalized_value
         ]
+
+    def _table(self) -> GoogleSheetLocator:
+        return self._catalog.table(
+            self.TABLE_NAME
+        )
+
+    def _append(
+            self,
+            values: list[str],
+    ) -> None:
+
+        table = self._table()
+
+        self._query_service.append_values(
+            spreadsheet_id=table.spreadsheet_id,
+            range_a1=table.range_a1,
+            values=[values],
+        )
+
+    def _append_raw_row(
+        self,
+        *,
+        row: RawRow,
+        columns: tuple[str, ...],
+    ) -> None:
+
+        values = [
+            row.get(column, "")
+            for column in columns
+        ]
+
+        self._append(values)
