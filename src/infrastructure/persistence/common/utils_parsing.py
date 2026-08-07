@@ -266,14 +266,14 @@ def parse_optional_datetime(
     if not text:
         return None
 
-    accepted_formats = (
-        # ISO-8601
-        "%Y-%m-%dT%H:%M:%S",
-        "%Y-%m-%dT%H:%M",
-        "%Y-%m-%d %H:%M:%S",
-        "%Y-%m-%d %H:%M",
+    # Try ISO-8601 first.
+    try:
+        return datetime.fromisoformat(text)
+    except ValueError:
+        pass
 
-        # US formats
+    accepted_formats = (
+        # Additional non-ISO formats
         "%m/%d/%Y %H:%M:%S",
         "%m/%d/%Y %H:%M",
         "%m/%d/%Y %I:%M %p",
@@ -291,7 +291,6 @@ def parse_optional_datetime(
                 text,
                 datetime_format,
             )
-
         except ValueError:
             continue
 
