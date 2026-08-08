@@ -2,7 +2,8 @@
 
 from fastapi import APIRouter, Request
 from fastapi.responses import FileResponse
-from pathlib import Path
+
+from src.common.memory import log_memory
 
 import logging
 
@@ -29,21 +30,19 @@ def open_email(
         tracking_id: str,
         request: Request,
 ):
-    print("OPEN ROUTE HIT")
-    print()
+
+    log_memory("Route entered")
 
     container = request.app.state.container
 
-    print("container")
-    print(container)
-    print(container.track_open_event_use_case)
-    print()
 
     container.track_open_event_use_case.execute(
         tracking_id=tracking_id,
         ip_address=request.client.host if request.client else None,
         user_agent=request.headers.get("User-Agent"),
     )
+
+    log_memory("Route finished")
 
     return FileResponse(
         container.tracking_pixel_path,

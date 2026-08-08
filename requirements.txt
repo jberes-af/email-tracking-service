@@ -9,3 +9,5 @@ python-dotenv==1.2.2
 pydantic-settings>=2.14.2
 
 tzdata==2026.3
+
+psutil>=7.2.
