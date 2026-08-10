@@ -37,10 +37,6 @@ class TrackEmailOpenUseCase:
             tracking_id=tracking_id,
         )
 
-        print("message in use case")
-        print(message)
-        print()
-
         if message is None:
             return
 
